@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>댓글 작성</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="container">
+
+
+<div class="form-container">
+
+  <a th:href="@{/posts/board}">
+    <img th:src="@{/image/honey.png}" alt="메인" class="icon">
+  </a>
+
+  <h1>새 글 작성</h1>
+<!--  <form th:action="@{/posts/comment/create}" th:object="${comment}" method="post">-->
+<!--    <input type="hidden" th:field="*{userId}">-->
+<!--    <input type="hidden" th:field="*{NName}">-->
+<!--    <input type="hidden" th:field="*{postNo}">-->
+<!--    <input type="hidden" th:field="*{commNo}">-->
+<!--    <div>-->
+<!--      <label for="content">댓글 내용 입력</label>-->
+<!--      <textarea id="content" maxlength="200" placeholder="내용을 입력 해 주세요(최대 200자)" th:field="*{content}"></textarea>-->
+<!--    </div>-->
+<!--    <div>-->
+<!--      <button type="submit">등록하기</button>-->
+<!--    </div>-->
+<!--  </form>-->
+</div>
+</body>
+</html>

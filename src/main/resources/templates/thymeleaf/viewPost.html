@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${post.title}">게시글</title>
+    <link rel="stylesheet" th:href="@{/css/gpt.css}">
+</head>
+<body class="container">
+<script th:inline="javascript">
+        const postUpdate = /*[[${updateSuccess}]]*/ 0; // 모델에서 상태 정보 가져오기
+        if(postUpdate > 0){
+            if (postUpdate === 1) alert('글이 수정 되었습니다.');
+            else alert('글 수정에 실패하였습니다')
+        }
+        const commDelete = /*[[${deleteCommSuccess}]]*/ 0;
+        if(commDelete > 0){
+            if (commDelete===1) alert('댓글이 삭제 되었습니다.');
+            else alert('댓글 삭제에 실패하였습니다')
+        }
+        const commUpdate = /*[[${updateCommSuccess}]]*/ 0;
+        if(commUpdate > 0){
+            if (commUpdate===1) alert('댓글이 수정 되었습니다.');
+            else alert('댓글 수정에 실패하였습니다')
+        }
+        const commCreate = /*[[${createCommSuccess}]]*/ 0;
+        if(commCreate > 0){
+            if (commCreate===1) alert('댓글이 생성 되었습니다.');
+            else alert('댓글 생성에 실패하였습니다')
+        }
+        const like = /*[[${likeSuccess}]]*/ 0;
+        if(like > 0){
+            if (like===1) alert('좋아요가 수정 되었습니다.');
+            else alert('좋아요 수정에 실패하였습니다')
+        }
+</script>
+
+<div th:class="head">
+    <a th:href="@{/posts/board}">
+        <img th:src="@{/image/honey.png}" alt="메인" class="icon">
+    </a>
+
+    <span>
+      <table th:class="mypage-table">
+          <thead th:class="mypage-head">
+          <tr th:class="mypage-name">
+              <!-- isUser가 true일 때는 닉네임 표시, false일 때는 "로그인이 안되어 있습니다" 메시지 표시 -->
+              <th th:if="${isUser}" th:text="'닉네임 : '+${user.NName}"></th>
+              <th th:unless="${isUser}" class="no-login">로그인이 안되어 있습니다</th>
+          </tr>
+          </thead>
+
+          <tbody>
+          <tr th:class="mypage-select">
+              <!-- isUser가 true일 때 마이페이지와 내정보수정 링크 표시 -->
+              <td th:if="${isUser}" th:class="mypage-select">
+                  <a th:class="button" th:href="@{/users/myPage}">마이페이지</a>
+                  <a th:class="button" th:href="@{/users/login}">로그아웃</a>
+              </td>
+              <!-- isUser가 false일 때 로그인과 회원가입 링크 표시 -->
+              <td th:unless="${isUser}" th:class="mypage-select">
+                  <a th:class="button" th:href="@{/users/login}">로그인하기</a>
+                  <a th:class="button" th:href="@{/login/signUp}">회원가입</a>
+              </td>
+          </tr>
+          </tbody>
+      </table>
+    </span>
+</div>
+
+<div class="category-toggle">
+    <button id="toggleButton" onclick="toggleCategories()" class="button-container">CATEGORY</button>
+
+    <div id="categoryContainer" style="display: none; overflow: hidden;">
+        <div class="category-content" th:each="category : ${categories}">
+            <a th:href="@{/posts/board(value=${category}, type='type3')}" class="button-big">
+                <span th:text="${category}"></span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleCategories() {
+        const categoryContainer = document.getElementById('categoryContainer');
+        const toggleButton = document.getElementById('toggleButton');
+
+        // 카테고리 컨테이너의 표시 상태 토글
+        if (categoryContainer.style.display === 'none') {
+            categoryContainer.style.display = 'flex'; // flex로 변경하여 수평 정렬
+            setTimeout(() => {
+                categoryContainer.classList.add('category-container-active'); // 애니메이션 적용
+            }, 10); // 약간의 지연 후 클래스 추가
+        } else {
+            categoryContainer.classList.remove('category-container-active'); // 애니메이션 제거
+            setTimeout(() => {
+                categoryContainer.style.display = 'none'; // display 속성 숨김
+            }, 300); // 애니메이션이 끝난 후 숨김
+            toggleButton.classList.remove('moved'); // 오른쪽으로 이동하는 클래스 제거
+        }
+    }
+</script>
+
+<table class="post">
+    <thead>
+    <tr>
+        <th colspan="2" class="post-header">
+            <span class="postTitle" th:text="${post.title}">게시글 제목</span>
+            <span class="category" th:text="' [' + ${post.category} + ']'">[카테고리]</span>
+            <span class="author" th:text="'[작성자: ' + ${post.author} + ']'">작성자</span>
+            <span class="date" th:text="${#dates.format(post.date, 'yyyy년 MM월 dd일')}">작성일</span>
+        </th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr>
+        <td colspan="2" class="content" th:text="${post.content}">게시글 내용</td>
+    </tr>
+
+    <tr>
+        <td class="like-section">
+            <form th:if="${isUser}" th:action="@{/posts/view/like}" method="post">
+                <input  type="hidden" name="postno" th:value="${post.postno}">
+                <button type="submit" th:class="icon-button">
+                    <img th:src="${likeMark == '♥' ? '/image/filledHeart.png' : '/image/emptyHeart.png'}" alt="좋아요 버튼" />
+                </button>
+            </form>
+
+            <img th:unless="${isUser}" style="width: 40px; height: 40px;"
+                 th:src="@{/image/filledHeart.png}" alt="좋아요 버튼" >
+            <span th:text="${likeNo}">좋아요 개수</span>
+        </td>
+
+    </tr>
+    </tbody>
+</table>
+
+<div class="comments" th:each="comment : ${cList}">
+    <h3>
+        <span th:text="${comment.NName}">작성자 </span>
+        <span th:text="${#dates.format(comment.CDate, 'yyyy년 MM월 dd일')}">작성일</span>
+    </h3>
+    <p th:text="${comment.content}">댓글 내용</p>
+    <div th:if="${isUser}">
+        <form  style="display: inline-block; margin-right: 10px;"
+               th:action="@{/posts/view(postno=${post.postno})}" method="get">
+            <input type="hidden" name="commNo" th:value="${comment.commNo}">
+            <input  type="hidden" name="postno" th:value="${post.postno}">
+            <input  type="hidden" name="isComment" th:value="true">
+            <button class="button" type="submit" >대댓글</button>
+            </form>
+
+        <form  style="display: inline-block; margin-right: 10px;"
+               th:if="${name == comment.NName}" th:action="@{/posts/view(postno=${post.postno})}" method="get">
+            <input type="hidden" name="subNo" th:value="${comment.subNo}">
+            <input type="hidden" name="content" th:value="${comment.content}">
+            <input type="hidden" name="commNo" th:value="${comment.commNo}">
+            <input  type="hidden" name="postno" th:value="${post.postno}">
+            <input  type="hidden" name="isComment" th:value="true">
+            <button class="button" type="submit" >댓글 수정</button>
+        </form>
+
+        <div style="display: inline-block; margin-right: 10px;">
+        <form th:if="${name == comment.NName}" th:action="@{/posts/comment/delete}" method="post" style="display:inline;">
+            <input type="hidden" name="subNo" th:value="${comment.subNo}"/> <!-- 댓글 ID를 전송 -->
+            <button  class="button"  type="submit" onclick="return confirm('정말 삭제하시겠습니까?');">댓글 삭제</button>
+        </form> <!-- POST 방식으로 삭제 -->
+        </div>
+    </div>
+</div >
+
+<div th:if="${isUser}">
+    <form  style="display: inline-block; margin-right: 10px; margin-top: 10px"
+           th:action="@{/posts/view(postno=${post.postno})}" method="get">
+        <input  type="hidden" name="postno" th:value="${post.postno}">
+        <input  type="hidden" name="isComment" th:value="true">
+        <button class="button" type="submit" >댓글 작성</button>
+    </form>
+</div>
+
+<div class="post-actions" style="margin-top: 10px;">
+    <a th:if="${name==post.author}" th:href="@{/posts/update(postno=${post.postno})}" class="button">글 수정</a>
+
+    <form th:if="${name==post.author}" th:action="@{/posts/delete}" method="post" style="display:inline;">
+        <input type="hidden" name="postno" th:value="${post.postno}"/> <!-- 포스트 ID를 전송 -->
+        <button class="button" type="submit" onclick="return confirm('정말 삭제하시겠습니까?');">글 삭제</button>
+    </form> <!-- POST 방식으로 삭제 -->
+</div>
+
+<div class="comment-input" th:if="${isComment}">
+    <form th:action="@{/posts/view}" th:object="${comment}" method="post">
+        <input type="hidden" th:field="*{userId}">
+        <input type="hidden" th:field="*{NName}">
+        <input type="hidden" th:field="*{postNo}">
+        <input type="hidden" th:field="*{commNo}">
+        <input type="hidden" th:field="*{subNo}">
+
+        <div>
+            <label for="content">댓글 내용 입력</label>
+            <textarea id="content" maxlength="200" placeholder="내용을 입력 해 주세요(최대 200자)" th:field="*{content}"></textarea>
+            <button class="button" type="submit">입력</button>
+    </div>
+    </form>
+</div>
+</body>
+</html>

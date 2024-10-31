@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>글 등록 확인</title>
+  <link rel="stylesheet" th:href="@{/css/result.css}">
+  <meta charset="UTF-8">
+</head>
+<body>
+
+<div class="container">
+
+  <a th:href="@{/posts/board}">
+    <img th:src="@{/image/honey.png}" alt="메인" class="icon">
+  </a>
+
+  <h1>글 등록 결과</h1>
+
+  <div th:if="${isSubmitted}" class="success">글이 성공적으로 작성되었습니다.</div>
+  <div th:if="${!isSubmitted}" class="error">글 작성에 실패했습니다.</div>
+
+
+
+  <a href="/posts/create">다른 글 작성</a>
+  <a href="/posts/board">게시판으로 이동</a>
+
+</div>
+</body>
+</html>

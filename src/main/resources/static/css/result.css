@@ -1,0 +1,45 @@
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f0f0f0; /* 배경색 추가 */
+    }
+    .container {
+      background-color: white; /* 컨테이너 배경색 */
+      padding: 20px; /* 패딩 추가 */
+      border-radius: 8px; /* 모서리 둥글게 */
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
+      text-align: center; /* 텍스트 가운데 정렬 */
+    }
+    .success {
+      color: green;
+      font-weight: bold;
+    }
+    .failure {
+      color: red;
+      font-weight: bold;
+    }
+    .error {
+      color: red;
+      font-weight: bold;
+    }
+    a {
+      display: block; /* 링크를 블록으로 만들어서 아래로 배치 */
+      margin-top: 10px; /* 링크 간격 추가 */
+      color: blue; /* 링크 색상 */
+      text-decoration: none; /* 링크 밑줄 제거 */
+    }
+    a:hover {
+      text-decoration: underline; /* 마우스 오버 시 밑줄 추가 */
+    }
+
+    .icon {
+        width: 50px;
+        height: auto;
+        margin-right: 15px;
+    }
+    .icon:hover{
+        transform: scale(1.05);
+    }

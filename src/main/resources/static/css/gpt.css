@@ -1,0 +1,448 @@
+.board-table {
+    width: 100%; /* 테이블 폭을 100%로 설정 */
+    margin-top: 20px; /* 위쪽 여백 */
+    font-family: 'Montserrat', sans-serif; /* 폰트 설정 */
+    color: #212529;
+    background-color: #FFE5B4; /* 테이블의 배경색을 헤더보다 약간 연하게 설정 */
+    border: 2px solid #F94144; /* 테두리 */
+    border-radius: 5px; /* 둥근 모서리 */
+    border-collapse: collapse;
+    overflow: hidden;
+}
+
+.board-table th, .button-cell {
+    padding: 10px; /* 셀 안 여백 */
+    text-align: center; /* 텍스트 가운데 정렬 */
+    font-weight: bold;
+    border: none; /* 셀 테두리 제거 */
+    cursor: pointer; /* 커서를 포인터로 변경 */
+    transition: background-color 0.3s; /* 배경색 전환 효과 */
+}
+
+.board-table th, .cell {
+    padding: 10px; /* 셀 안 여백 */
+    text-align: center; /* 텍스트 가운데 정렬 */
+    border: none; /* 셀 테두리 제거 */
+}
+
+.board-table th {
+    background-color: #FFC107; /* 헤더 배경색 */
+    border-bottom: 1px solid #F94144; /* 상단 가로 경계선 */
+}
+
+/* 각 행에 대한 경계선 추가 */
+.board-table tr {
+    border-bottom: 1px solid #F94144; /* 행 아래 경계선 */
+}
+
+.board-table .icon {
+    height: 30px;
+    width: auto;
+    align-items: center; /* 수직 중앙 정렬 */
+    justify-content: center; /* 수평 중앙 정렬 */
+}
+
+.cell {
+    background-color: #FFE5B4; /* 셀 기본 배경색 */
+    justify-content: center; /* 가로 중앙 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
+}
+
+.button-cell {
+    background-color: #FFE5B4; /* 셀 기본 배경색 */
+    color: #212529;
+    display: flex; /* Flexbox로 셀 내용 정렬 */
+    justify-content: center; /* 가로 중앙 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
+    text-decoration: none; /* 밑줄 제거 */
+}
+
+.button-cell:hover {
+    background-color: #FF9800; /* 마우스 오버 시 배경색 변경 */
+}
+
+.post-title {
+    color: #212529;
+    text-decoration: none; /* 밑줄 제거 */
+}
+
+.post-title:hover {
+    text-decoration: underline; /* 마우스 오버 시 밑줄 추가 */
+}
+
+.post-title {
+    color: #212529; /* 제목 글자색 */
+    text-decoration: none; /* 밑줄 제거 */
+}
+
+.post-title:hover {
+    text-decoration: underline; /* 마우스 오버 시 밑줄 추가 */
+}
+
+.button {
+    display: inline-block; /* 버튼처럼 보이도록 inline-block 설정 */
+    margin-left: 5px;
+    padding: 5px 10px; /* 여백 */
+    font-size: 14px; /* 글자 크기 */
+    color: #212529; /* 글자 색상 */
+    background-color: #FFC107; /* 벌꿀 색상 */
+    border: 2px solid #F94144; /* 테두리 */
+    border-radius: 5px; /* 둥근 모서리 */
+    text-decoration: none; /* 밑줄 제거 */
+    transition: background-color 0.3s, transform 0.3s; /* 전환 효과 */
+}
+
+.category-toggle {
+    display: flex; /* Flexbox를 사용하여 수평 정렬 */
+    align-items: center; /* 수직 정렬을 중앙으로 설정 */
+}
+
+#categoryContainer {
+    display: flex; /* Flexbox로 가로 정렬 */
+    flex-wrap: wrap; /* 줄 바꿈을 허용 */
+}
+
+.category-content {
+    display: flex; /* Flexbox로 가로 정렬 */
+    margin-right: 10px; /* 카테고리 항목 간의 간격 */
+}
+
+/* 기존 스타일 유지 */
+.button:hover, .button-big:hover, .button-container:hover {
+    background-color: #F94144; /* 마우스 오버 시 색상 변경 */
+    transform: scale(1.05); /* 마우스 오버 시 크기 증가 효과 */
+}
+
+.button-big, .button-container{
+    display: inline-block; /* 버튼처럼 보이도록 inline-block 설정 */
+    padding: 5px 10px; /* 여백 */
+    font-size: 20px; /* 글자 크기 */
+    font-weight: bold;
+    color: #212529; /* 글자 색상 */
+    background-color: #FFC107; /* 벌꿀 색상 */
+    border: 2px solid #F94144; /* 테두리 */
+    border-radius: 5px; /* 둥근 모서리 */
+    text-decoration: none; /* 밑줄 제거 */
+    transition: background-color 0.3s, transform 0.3s ease; /* 전환 효과 */
+}
+.button-container {
+    font-size: 24px;
+    margin-right: 10px;
+}
+
+.category-content {
+    transform: translateX(-600px); /* 위쪽으로 살짝 이동 */
+    opacity: 0; /* 초기 투명도 설정 */
+    transition: transform 1s ease, opacity 1s ease; /* 변형 및 투명도에 애니메이션 추가 */
+}
+
+.category-container-active .category-content {
+    transform: translateX(0); /* 원래 위치로 복귀 */
+    opacity: 1; /* 불투명으로 변경 */
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.head {
+    display: flex;
+    align-items: center;
+}
+
+.icon {
+    width: 50px;
+    height: auto;
+    margin-right: 15px;
+    transition: transform 0.3s;
+}
+.icon:hover{
+    transform: scale(1.05);
+}
+
+.mypage-table {
+    border-collapse: collapse;
+    background-color: #fff7d5;
+    border-radius: 8px;
+    overflow: hidden;
+    width: 100%;
+    text-align: center;
+}
+
+.mypage-head, .mypage-select {
+    padding: 10px;
+}
+
+.mypage-name th {
+    padding: 10px;
+    text-align: center;
+}
+
+.no-login {
+    text-align: center; /* "로그인이 안되어 있습니다"를 중앙 정렬 */
+    color: #212529; /* 색상 변경 (선택 사항) */
+}
+
+.mypage-select a {
+    margin: 0 10px; /* 링크 간 간격 */
+    text-decoration: none;
+    color: #212529; /* 링크 색상 */
+}
+
+.mypage-select td {
+    text-align: center;
+}
+
+/* 전체 폼 스타일 */
+.search-form {
+    display: flex; /* Flexbox로 아이템 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+    margin: 20px 0; /* 위아래 여백 */
+    padding: 10px; /* 안쪽 여백 */
+    border: 1px solid #F94144; /* 테두리 */
+    border-radius: 5px; /* 둥근 모서리 */
+    background-color: #FFEBB2; /* 배경색 */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+}
+
+/* 레이블 스타일 */
+.search-form label {
+    margin-right: 10px; /* 레이블과 select 사이 여백 */
+    font-family: 'Montserrat', sans-serif; /* 폰트 설정 */
+    color: #212529; /* 글자 색상 */
+}
+
+/* 선택 박스 스타일 */
+.search-form select {
+    padding: 10px; /* 안쪽 여백 */
+    border: 1px solid #F94144; /* 테두리 */
+    border-radius: 5px; /* 둥근 모서리 */
+    background-color: #FFF1D1; /* 배경색 */
+    font-family: 'Montserrat', sans-serif; /* 폰트 설정 */
+    cursor: pointer; /* 커서 포인터로 변경 */
+    transition: border-color 0.3s; /* 테두리 색상 전환 효과 */
+}
+
+/* 선택 박스 포커스 스타일 */
+.search-form select:focus {
+    border-color: #FF9800; /* 포커스 시 테두리 색상 */
+    outline: none; /* 기본 아웃라인 제거 */
+}
+
+/* 텍스트 입력 필드 스타일 */
+.search-form input[type="text"] {
+    padding: 10px; /* 안쪽 여백 */
+    border: 1px solid #F94144; /* 테두리 */
+    background-color: #FFF1D1;
+    border-radius: 5px; /* 둥근 모서리 */
+    margin-left: 10px; /* 왼쪽 여백 */
+    flex-grow: 1; /* 남은 공간 차지 */
+    font-family: 'Montserrat', sans-serif; /* 폰트 설정 */
+}
+
+/* 텍스트 입력 필드 포커스 스타일 */
+.search-form input[type="text"]:focus {
+    border-color: #FF9800; /* 포커스 시 테두리 색상 */
+    outline: none; /* 기본 아웃라인 제거 */
+}
+
+/* 검색 버튼 스타일 */
+.search-form button {
+    margin-left: 5px;
+    padding: 10px 15px; /* 안쪽 여백 */
+    border: none; /* 테두리 제거 */
+    border-radius: 5px; /* 둥근 모서리 */
+    background-color: #F94144; /* 배경색 */
+    color: white; /* 글자 색상 */
+    cursor: pointer; /* 커서 포인터로 변경 */
+    transition: background-color 0.3s; /* 배경색 전환 효과 */
+    font-family: 'Montserrat', sans-serif; /* 폰트 설정 */
+}
+
+/* 검색 버튼 호버 스타일 */
+.search-form button:hover {
+    background-color: #FF9800; /* 마우스 오버 시 배경색 변경 */
+}
+body {
+    background-color: #FFF1D1;
+}
+
+.post {
+    width: 100%;
+    margin-top: 20px;
+    font-family: 'Montserrat', sans-serif;
+    border-collapse: collapse;
+    background-color: #FFF1D1;
+    border: 2px solid #F94144;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 게시글 제목 및 정보 스타일 */
+.post-header {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* 각 요소 간 간격 */
+    background-color: #FFEBB2;
+    padding: 15px;
+    font-size: 18px;
+    color: #212529;
+}
+
+.postTitle {
+    color: #212529; /* 검은색에 가까운 회색 */
+    font-weight: bold;
+}
+
+.category {
+    font-style: italic;
+}
+
+.author, .date {
+    font-size: 14px;
+    color: #343a40;
+    font-style: italic;
+}
+
+/* 게시글 내용 스타일 */
+.content {
+    padding: 20px;
+    font-size: 18px;
+    color: #212529;
+    line-height: 1.6;
+    background-color: #FFE5B4;
+    border-top: 1px solid #F94144;
+    white-space: pre-wrap;
+}
+
+.like-section {
+    display: flex;
+    align-items: center; /* 수직 중앙 정렬 */
+    justify-content: center; /* 수평 중앙 정렬 */
+    gap: 8px; /* 아이콘과 좋아요 개수 간 간격 */
+    padding: 5px; /* 섹션 내 여백 */
+}
+
+.icon-button {
+    width: 36px; /* 이미지 버튼 크기 조정 (약간 늘림) */
+    height: 36px; /* 이미지 버튼 크기 조정 (약간 늘림) */
+    background-color: transparent; /* 배경 투명 */
+    border: none; /* 테두리 제거 */
+    padding: 0; /* 여백 제거 */
+    cursor: pointer; /* 커서 포인터 */
+    display: flex;
+    align-items: center; /* 버튼 내 이미지 중앙 정렬 */
+    justify-content: center;
+    transition: transform 0.2s ease; /* 크기 전환 효과 */
+}
+
+/* 호버 시 크기만 커지게 */
+.icon-button:hover {
+    transform: scale(1.1); /* 살짝 크기 증가 */
+}
+
+.icon-button img {
+    width: 100%; /* 버튼 크기에 맞춰 이미지 크기 조정 */
+    height: 100%; /* 버튼 크기에 맞춰 이미지 크기 조정 */
+    object-fit: contain; /* 이미지를 비율에 맞춰 조정 */
+}
+
+.like-count {
+    font-weight: bold; /* 좋아요 개수 글씨 두껍게 */
+    font-size: 1rem; /* 글자 크기 조정 */
+    margin-left: 5px; /* 버튼과 좋아요 개수 간 약간의 간격 */
+}
+.comments {
+    background-color: #fff7d5; /* 댓글 배경색 */
+    border: 1px solid #F94144; /* 테두리 색상 */
+    border-radius: 5px; /* 둥근 모서리 */
+    padding: 15px; /* 안쪽 여백 */
+    margin-top: 20px; /* 위쪽 여백 */
+}
+
+.comments h3 {
+    margin: 0; /* 제목의 기본 여백 제거 */
+    font-family: 'Montserrat', sans-serif; /* 폰트 설정 */
+    color: #212529; /* 제목 글자색 */
+}
+
+.comments p {
+    margin: 5px 0; /* 댓글 내용의 여백 설정 */
+    font-family: 'Montserrat', sans-serif; /* 폰트 설정 */
+    color: #343a40; /* 댓글 내용 글자색 */
+    white-space: pre-wrap;
+}
+
+.comments .button {
+    background-color: #FFC107; /* 버튼 배경색 */
+    color: #212529; /* 버튼 글자색 */
+    padding: 5px 10px; /* 버튼 안쪽 여백 */
+    border: 2px solid #F94144; /* 버튼 테두리 */
+    border-radius: 5px; /* 버튼 둥근 모서리 */
+    text-decoration: none; /* 링크의 밑줄 제거 */
+    transition: background-color 0.3s, transform 0.3s; /* 전환 효과 */
+}
+
+.comments .button:hover {
+    background-color: #F94144; /* 버튼 hover 시 배경색 변경 */
+    color: white; /* hover 시 글자색 변경 */
+    transform: scale(1.05); /* hover 시 버튼 크기 증가 효과 */
+}
+.post-actions {
+    display: flex; /* Flexbox로 정렬 */
+    justify-content: flex-end; /* 오른쪽 정렬 */
+    margin-top: 10px; /* 위쪽 여백 */
+}
+
+.post-actions .button {
+    margin-left: 10px; /* 버튼 사이의 간격 */
+}
+
+.comment-input {
+    background-color: #FFF1D1; /* 배경색 */
+    border: 1px solid #F94144; /* 테두리 색상 */
+    border-radius: 5px; /* 둥근 모서리 */
+    margin-top: 15px; /* 상단 여백 */
+    width: 100%; /* 전체 너비 설정 */
+    max-width: 600px; /* 최대 너비 설정 */
+    box-sizing: border-box; /* padding과 border를 width에 포함 */
+    padding: 15px; /* 내부 여백 */
+}
+
+/* 댓글 입력 레이블 스타일 */
+.comment-input label {
+    font-family: 'Montserrat', sans-serif; /* 폰트 설정 */
+    font-weight: bold; /* 두꺼운 글씨 */
+    color: #333; /* 글자 색상 */
+    display: block; /* 블록 요소로 설정 */
+    margin-bottom: 10px; /* 하단 여백 */
+}
+
+/* 댓글 입력 텍스트 영역 스타일 */
+.comment-input textarea {
+    width: 100%; /* 전체 너비 */
+    height: 80px; /* 높이 설정 */
+    border: 1px solid #ccc; /* 테두리 색상 */
+    border-radius: 5px; /* 둥근 모서리 */
+    padding: 10px; /* 안쪽 여백 */
+    font-family: 'Montserrat', sans-serif; /* 폰트 설정 */
+    resize: none; /* 크기 조절 비활성화 */
+    box-sizing: border-box; /* padding과 border를 width에 포함 */
+    margin-top: 10px; /* 위쪽 여백 */
+}
+
+/* 댓글 입력 버튼 스타일 */
+.comment-input button {
+    margin-top: 10px; /* 상단 여백 */
+    padding: 10px 15px; /* 안쪽 여백 */
+    border: none; /* 테두리 제거 */
+    border-radius: 5px; /* 둥근 모서리 */
+    background-color: #F94144; /* 배경색 */
+    color: white; /* 글자 색상 */
+    cursor: pointer; /* 커서 포인터로 변경 */
+    transition: background-color 0.3s; /* 배경색 전환 효과 */
+    font-family: 'Montserrat', sans-serif; /* 폰트 설정 */
+}
+
+/* 댓글 입력 버튼 호버 스타일 */
+.comment-input button:hover {
+    background-color: #FF9800; /* 마우스 오버 시 배경색 변경 */
+}

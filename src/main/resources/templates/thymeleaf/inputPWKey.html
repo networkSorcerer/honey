@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>제시어 입력</title>
+  <link rel="stylesheet" th:href="@{/css/userInterface.css}"> <!-- CSS 파일 링크 추가 -->
+</head>
+<body>
+
+
+
+<div class="form-container">
+
+  <a th:href="@{/posts/board}">
+    <img th:src="@{/image/honey.png}" alt="메인" class="icon">
+  </a>
+
+<h1>비밀번호 찾기 - 제시어 입력</h1>
+<p>제시문 <span th:text="${pwLOCK}"></span></p>
+<form th:action="@{/login/inputPWKey}" method="post">
+  <input type="hidden" name="userID" th:value="${userID}" />
+  <label for="pwKey"></label><input type="text" id="pwKey" name="pwKey" placeholder="제시어를 입력 해 주세요" required />
+  <button type="submit">비밀번호 확인</button>
+  <br>
+</form>
+  <button onclick="location.href='/users/login';">로그인 페이지로</button>
+
+</div>
+</body>
+</html>

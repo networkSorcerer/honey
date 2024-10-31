@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시판</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="container">
+
+<script>
+    window.onload = function() {
+        const postDelete = /*[[${deleteSuccess}]]*/ false;
+        if (postDelete){
+            alert('글이 삭제되었습니다')
+        }
+    };
+</script>
+
+<div class="head">
+    <a href="/main">
+        <img th:src="image/honey.png" alt = "메인" class="head">
+    </a>
+</div>
+<div th:each="category : ${categories}">
+    <a th:href="@{/posts/board(search=${category}, type='type5')}"
+       class="button"
+       th:text="${category}"></a>
+</div>
+
+<div id="posts">
+    <table>
+        <thead>
+        <tr>
+            <th>번호</th>
+            <th>카테고리</th>
+            <th>제목</th>
+            <th>닉네임</th>
+            <th>게시일</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr th:each="post, postStat : ${board}"
+            th:if="${postStat.index < page * maxBoard
+        and postStat.index > (page - 1) * maxBoard}">
+            <td th:text="${postStat.index + 1}"></td>
+            <td th:text="${post.title}"></td>
+            <td>
+                <a th:href="@{posts/view(postno=${post.postno})}" th:text="${post.title}"></a>
+            </td>
+            <td>
+                <a th:href="@{posts/board(search=${post.author}, type='type4')}" th:text="${post.author}"></a>
+            </td>
+            <td th:text="${post.date}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<p>현재 페이지: <span th:text="${page}"></span></p>
+<a th:each="number : ${#numbers.sequence(1, boardNo)}" th:text="${number}"
+   th:href="@{/posts/board(search=${search}, page=${number}, type=${type})}">
+</a>
+
+<form th:action="@{/posts/board}" method="get">
+    <label for="searchOptions"><img th:src="image/honey.png" alt = "검색"></label>
+    <select id="searchOptions" th:field="*{type}" onchange="updateType()">
+        <option value=""></option>
+        <option th:each="option : ${searchOptions}" th:value="${option}" th:text="${option}"></option>
+    </select>
+    <input type="text" th:field="*{search}" placeholder="검색내용을 입력하세요"
+           th:value="${search}"/>
+    <input type="hidden" id="type" name="type" th:value="${type}"/>
+    <input type="hidden" name="page" th:value="1"/>
+    <button type="submit">검색</button>
+</form>
+<script>
+    function updateType() {
+        var selectedOption = document.getElementById('searchOptions').value;
+        var typeInput = document.getElementById('type');
+
+        // 선택된 옵션에 따라 type 값을 설정합니다.
+        if (selectedOption === '제목') {
+            typeInput.value = 'type3';
+        } else if (selectedOption === '작성자') {
+            typeInput.value = 'type2';
+        } else {
+            typeInput.value = 'type1'; // 기본값
+        }
+    }
+</script>
+</body>
+</html>

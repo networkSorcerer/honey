@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>게시판</title>
+  <link rel="stylesheet" th:href="@{/css/gpt.css}">
+</head>
+<body class="container">
+
+<script th:inline="javascript">
+        const postDelete = /*[[${deleteSuccess}]]*/ 0;
+        if(postDelete > 0){
+            if (postDelete===1) alert('글이 삭제 되었습니다.');
+            else alert('글 삭제에 실패하였습니다')
+        }
+</script>
+
+<div th:class="head">
+    <a th:href="@{/posts/board}">
+        <img th:src="@{/image/honey.png}" alt="게시판" class="icon">
+    </a>
+
+    <span>
+      <table th:class="mypage-table">
+          <thead th:class="mypage-head">
+          <tr th:class="mypage-name">
+              <!-- isUser가 true일 때는 닉네임 표시, false일 때는 "로그인이 안되어 있습니다" 메시지 표시 -->
+              <th th:if="${isUser}" th:text="'닉네임 : '+${user.NName}"></th>
+              <th th:unless="${isUser}" class="no-login">로그인이 안되어 있습니다</th>
+          </tr>
+          </thead>
+
+          <tbody>
+          <tr th:class="mypage-select">
+              <!-- isUser가 true일 때 마이페이지와 내정보수정 링크 표시 -->
+              <td th:if="${isUser}" th:class="mypage-select">
+                  <a th:class="button" th:href="@{/users/myPage}">마이페이지</a>
+                  <a th:class="button" th:href="@{/users/login}">로그아웃</a>
+              </td>
+              <!-- isUser가 false일 때 로그인과 회원가입 링크 표시 -->
+              <td th:unless="${isUser}" th:class="mypage-select">
+                  <a th:class="button" th:href="@{/users/login}">로그인하기</a>
+                  <a th:class="button" th:href="@{/login/signUp}">회원가입</a>
+              </td>
+          </tr>
+          </tbody>
+      </table>
+    </span>
+</div>
+
+<div class="category-toggle">
+    <button id="toggleButton" onclick="toggleCategories()" class="button-container">CATEGORY</button>
+    <div id="categoryContainer" style="display: none; overflow: hidden;">
+        <div class="category-content" th:each="category : ${categories}">
+            <a th:href="@{/posts/board(value=${category}, type='type3')}" class="button-big">
+                <span th:text="${category}"></span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleCategories() {
+        const categoryContainer = document.getElementById('categoryContainer');
+        const toggleButton = document.getElementById('toggleButton');
+
+        // 카테고리 컨테이너의 표시 상태 토글
+        if (categoryContainer.style.display === 'none') {
+            categoryContainer.style.display = 'flex'; // flex로 변경하여 수평 정렬
+            setTimeout(() => {
+                categoryContainer.classList.add('category-container-active'); // 애니메이션 적용
+            }, 10); // 약간의 지연 후 클래스 추가
+        } else {
+            categoryContainer.classList.remove('category-container-active'); // 애니메이션 제거
+            setTimeout(() => {
+                categoryContainer.style.display = 'none'; // display 속성 숨김
+            }, 300); // 애니메이션이 끝난 후 숨김
+            toggleButton.classList.remove('moved'); // 오른쪽으로 이동하는 클래스 제거
+        }
+    }
+</script>
+
+<div class="sort">
+    <form th:action="@{/posts/board}" method="get" class="search-form">
+        <label for="sortOptions">정렬:</label>
+        <select id="sortOptions" th:field="*{sort}" onchange="updateSort();">
+            <option value=""></option>
+            <option th:each="option : ${sortOptions}" th:value="${option}" th:text="${option}"></option>
+        </select>
+
+        <input type="hidden" id="sort" name="sort" th:value="${sort}"/>
+        <input type="hidden" name="page" th:value="1"/>
+        <input type="hidden" name="value" th:value="${value}"/>
+        <input type="hidden" name="type" th:value="${type}"/>
+        <button type="submit" >정렬</button>
+    </form>
+</div>
+
+  <div id="posts">
+    <table th:class="board-table">
+      <thead>
+        <tr>
+            <th>번호</th>
+            <th>카테고리</th>
+            <th>제목</th>
+            <th>닉네임</th>
+            <th>게시일</th>
+            <th th:if="${isUser}">좋아요</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr th:each="post, postStat : ${board}"
+        th:if="${postStat.index < page * maxBoard
+        and postStat.index >= (page - 1) * maxBoard}">
+          <td th:class="cell" th:text="${postStat.index + 1}"></td>
+          <td th:class="cell" th:text="${post.category}"></td>
+          <td>
+            <a th:class="button-cell" th:href="@{/posts/view(postno=${post.postno})}" th:text="${post.title}"></a>
+          </td>
+          <td>
+            <a th:class="button-cell" th:href="@{/posts/board(value=${post.author}, type='type2')}" th:text="${post.author}"></a>
+          </td>
+          <td th:class="cell" th:text="${post.date}"></td>
+          <td th:if="${isUser}" th:class="cell">
+              <img th:src="${post.content == '♥' ? '/image/filledHeart.png' : '/image/emptyHeart.png'}"
+                  th:class="icon"  alt="좋아요" />
+          </td>
+        </tr>
+
+        <tr th:if="${boardNo == 0}">
+            <td></td>
+            <td></td>
+            <td th:class="cell">게시물이 없습니다.</td>
+            <td></td>
+            <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>현재 페이지:
+      <span th:text="${page}"></span>
+      <span><a th:if="${isUser}" th:class="button" th:href="@{/posts/create}">글 작성</a> </span></p>
+
+<div th:if="${boardNo > 0}">
+  <a class="button" th:each="number : ${#numbers.sequence(1, boardNo)}" th:text="${number}"
+     th:href="@{/posts/board(value=${value}, page=${number},
+     type=${type}, search=${search}, searchType=${searchType}, sort=${sort})}">
+  </a>
+</div>
+
+<form th:action="@{/posts/board}" method="get" class="search-form">
+    <label for="searchOptions">검색:</label>
+    <select id="searchOptions" th:field="*{searchType}" onchange="updateType()">
+        <option value=""></option>
+        <option th:each="option : ${searchOptions}" th:value="${option}" th:text="${option}"></option>
+    </select>
+
+    <input type="text" id="search" name="search" placeholder="검색내용을 입력하세요" th:value="${search}" />
+    <input type="hidden" id="searchType" name="searchType" th:value="${searchType}"/>
+    <input type="hidden" name="page" th:value="1"/>
+    <input type="hidden" name="value" th:value="${value}"/>
+    <input type="hidden" name="type" th:value="${type}"/>
+    <input type="hidden" name="sort" th:value="${sort}"/>
+    <button type="submit">검색</button>
+</form>
+
+<script>
+    function updateType() {
+      const selectedOption = document.getElementById('searchOptions').value;
+      const typeInput = document.getElementById('searchType');
+
+      // 선택된 옵션에 따라 type 값을 설정합니다.
+      if (selectedOption === '제목') {
+        typeInput.value = 'type2';
+      } else if (selectedOption === '작성자') {
+        typeInput.value = 'type3';
+      } else if (selectedOption === '내용') {
+          typeInput.value = 'type4';
+      } else if (selectedOption === '제목 + 내용') {
+          typeInput.value = 'type5';
+      } else {
+        typeInput.value = 'type1'; // 기본값
+      }
+    }
+    function updateSort() {
+        const selectedOption = document.getElementById('sortOptions').value;
+        const typeInput = document.getElementById('sort');
+
+        // 선택된 옵션에 따라 type 값을 설정합니다.
+        if (selectedOption === '인기순') {
+            typeInput.value = 'type2';
+        } else if (selectedOption === '오래된순') {
+            typeInput.value = 'type3';
+        } else {
+            typeInput.value = 'type1'; // 기본값
+        }
+    }
+  </script>
+</body>
+</html>

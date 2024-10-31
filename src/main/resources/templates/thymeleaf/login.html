@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>로그인 페이지</title>
+  <link rel="stylesheet" th:href="@{/css/userInterface.css}">
+</head>
+<body class="container">
+
+<div class="form-container">
+
+  <a th:href="@{/posts/board}">
+    <img th:src="@{/image/honey.png}" alt="메인" class="icon">
+  </a>
+
+  <h1>로그인</h1>
+  <form th:action="@{/users/login}" th:object="${login}" method="post">
+    <div th:if="${error}" style="color: red;">
+      <p th:text="${error}"></p>
+    </div>
+    <div>
+      <label for="id">아이디</label>
+      <input type="text" id="id" maxlength="16" placeholder="ID" th:field="*{userID}" />
+    </div>
+    <div>
+      <label for="pw">비밀번호</label>
+      <input type="password" id="pw" maxlength="16" placeholder="PW" th:field="*{userPW}" />
+    </div>
+    <div>
+      <button type="submit">로그인</button>
+    </div>
+  </form>
+
+  <!-- 아이디/PW 찾기 또는 회원가입 옵션 -->
+  <div class="links">
+    <a th:href="@{/login/findID}">아이디 찾기</a>
+    <a th:href="@{/login/findPW}">/ 비밀번호 찾기</a>
+    <a th:href="@{/login/signUp}">/ 회원가입</a>
+  </div>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>비밀번호 확인</title>
+  <link rel="stylesheet" th:href="@{/css/userInterface.css}"> <!-- CSS 파일 링크 추가 -->
+</head>
+<body>
+
+<div class="form-container">
+
+  <a th:href="@{/posts/board}">
+    <img th:src="@{/image/honey.png}" alt="메인" class="icon">
+  </a>
+
+<h2>비밀번호 확인</h2>
+<form th:action="@{/users/verify}" method="post">
+  <label for="password">비밀번호</label>
+  <input type="password" id="password" name="password" placeholder="PW" required>
+  <button type="submit">확인</button>
+  <input type="hidden" id="type" name="type" th:value="${type}">
+</form>
+
+<div th:if="${error}" th:text="${error}" style="color: red;"></div>
+</div>
+</body>
+</html>

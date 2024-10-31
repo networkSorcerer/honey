@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>New Page</title>
+  <link rel="stylesheet" th:href="@{/css/posting.css}">
+</head>
+<body class="container">
+
+
+<div class="form-container">
+
+  <a th:href="@{/posts/board}">
+    <img th:src="@{/image/honey.png}" alt="메인" class="icon">
+  </a>
+
+  <h1>새 글 작성</h1>
+  <form th:action="@{/posts/create}" th:object="${post}" method="post">
+    <input type="hidden" th:field="*{author}">
+    <input type="hidden" th:field="*{userID}">
+    <div>
+      <label for="categories">카테고리</label>
+      <select id="categories" th:field="*{category}">
+        <option value="">카테고리를 선택하세요</option>
+        <option th:each="category : ${categories}" th:value="${category}" th:text="${category}"></option>
+      </select>
+    </div>
+    <div>
+      <p th:text="${id}"></p>
+      <label for="title">글 제목 입력</label>
+      <input type="text" id="title" maxlength="100" placeholder="제목을 입력 해 주세요(최대 100자)" th:field="*{title}" />
+    </div>
+    <div>
+      <label for="content">글 본문 내용 입력</label>
+      <textarea id="content" maxlength="200" placeholder="내용을 입력 해 주세요(최대 200자)" th:field="*{content}"></textarea>
+    </div>
+    <div>
+      <button type="submit">글 작성하기</button>
+    </div>
+  </form>
+</div>
+</body>
+</html>
